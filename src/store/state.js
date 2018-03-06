@@ -38,7 +38,10 @@ const initialState = {
         closeSession: {
             open: false
         }
-    }
+    },
+
+    // authorization
+    isLoggedIn: false
 }
 
 // restoring price from storage
