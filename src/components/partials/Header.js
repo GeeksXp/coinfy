@@ -27,12 +27,15 @@ import {
     DropdownItem,
     DropdownMenu
 } from '/components/styled/Dropdown'
+import {signOut} from '../../utils/auth'
 
 export default class Header extends Component {
     componentWillMount() {
+
         this.observer = createObserver(mutations => this.forceUpdate())
         this.observer.observe(state, 'menuOpen')
         this.observer.observe(state.location, 'pathname')
+        this.observer.observe(state, 'isLoggedIn')
 
         // this.currenciesList = [
         //     {
@@ -111,6 +114,11 @@ export default class Header extends Component {
         setHref(routes.settings())
     }
 
+    onSignOut() {
+        signOut()
+        state.menuOpen = false
+    }
+
     // onAddAsset() {
     //     setHref(routes.add())
     // }
@@ -145,7 +153,8 @@ export default class Header extends Component {
             // onClose: this.onClose,
             onHome: this.onHome,
             onSettings: this.onSettings,
-            totalAssets: state.totalAssets
+            totalAssets: state.totalAssets,
+            onSignOut: this.onSignOut
         })
     }
 }
@@ -164,7 +173,8 @@ function HeaderTemplate({
     // onClose,
     onHome,
     onSettings,
-    totalAssets
+    totalAssets,
+    onSignOut
 }) {
     return (
         <HeaderDiv>
@@ -177,11 +187,13 @@ function HeaderTemplate({
                 </Testnet>
             </Show>
             <HeaderContent>
-                <HeaderLeft onClick={onSideMenu}>
-                    <div>
-                        <IconMenu size={28} color="white" />
-                    </div>
-                </HeaderLeft>
+                <Show if={state.isLoggedIn}>
+                    <HeaderLeft onClick={onSideMenu}>
+                        <div>
+                            <IconMenu size={28} color="white" />
+                        </div>
+                    </HeaderLeft>
+                </Show>
                 <HeaderCenter>
                     <HeaderLogo
                         isHome={state.location.pathname === routes.home()}
@@ -202,63 +214,69 @@ function HeaderTemplate({
                             )
                     })} */}
                 </HeaderCenter>
-                <HeaderRight>
-                    <Dropdown
-                        onOpen={onMenuOpen}
-                        onClose={onMenuClose}
-                        open={menuOpen}
-                    >
-                        <IconMore size={30} color="white" />
-                        <DropdownMenu right="0">
-                            {/* <DropdownItem onClick={onAddAsset}>
-                                Add asset
-                            </DropdownItem> */}
-                            <DropdownItem onClick={onImport}>
-                                Import backup
-                            </DropdownItem>
-                            <DropdownItem
-                                onClick={onExport}
-                                disabled={totalAssets === 0}
+                <Show if={state.isLoggedIn}>
+                    <HeaderRight>
+                            <Dropdown
+                                onOpen={onMenuOpen}
+                                onClose={onMenuClose}
+                                open={menuOpen}
                             >
-                                Export backup
-                            </DropdownItem>
-                            <DropdownItem onClick={onSettings}>
-                                Settings
-                            </DropdownItem>
-                            {/* <DropdownItem
-                                onClick={onClose}
-                                disabled={totalAssets === 0}
-                            >
-                                Close session
-                            </DropdownItem> */}
-                        </DropdownMenu>
-                    </Dropdown>
-                    {/* <Dropdown
-                        onOpen={onMenuOpen}
-                        onClose={onMenuClose}
-                        open={menuOpen}
-                    >
-                        <Div>
-                            <HeaderCurrencySelected>
-                                {currency}
-                            </HeaderCurrencySelected>
-                            <DropdownArrow />
-                        </Div>
-                        <DropdownMenu right="0" top="25px">
-                            {currenciesList.map(item => {
-                                return (
-                                    <DropdownItem
-                                        disabled={currency === item.symbol}
-                                        onClick={e =>
-                                            onChangeCurrency(item.symbol)}
-                                    >
-                                        {item.label}
+                                <IconMore size={30} color="white" />
+                                <DropdownMenu right="0">
+                                    {/* <DropdownItem onClick={onAddAsset}>
+                                        Add asset
+                                    </DropdownItem> */}
+                                    <DropdownItem onClick={onImport}>
+                                        Import backup
                                     </DropdownItem>
-                                )
-                            })}
-                        </DropdownMenu>
-                    </Dropdown> */}
-                </HeaderRight>
+                                    <DropdownItem
+                                        onClick={onExport}
+                                        disabled={totalAssets === 0}
+                                    >
+                                        Export backup
+                                    </DropdownItem>
+                                    <DropdownItem onClick={onSettings}>
+                                        Settings
+                                    </DropdownItem>
+                                    <DropdownItem onClick={onSignOut}>
+                                        Sign out
+                                    </DropdownItem>
+                                    {/* <DropdownItem
+                                        onClick={onClose}
+                                        disabled={totalAssets === 0}
+                                    >
+                                        Close session
+                                    </DropdownItem> */}
+                                </DropdownMenu>
+                            </Dropdown>
+                        
+                        {/* <Dropdown
+                            onOpen={onMenuOpen}
+                            onClose={onMenuClose}
+                            open={menuOpen}
+                        >
+                            <Div>
+                                <HeaderCurrencySelected>
+                                    {currency}
+                                </HeaderCurrencySelected>
+                                <DropdownArrow />
+                            </Div>
+                            <DropdownMenu right="0" top="25px">
+                                {currenciesList.map(item => {
+                                    return (
+                                        <DropdownItem
+                                            disabled={currency === item.symbol}
+                                            onClick={e =>
+                                                onChangeCurrency(item.symbol)}
+                                        >
+                                            {item.label}
+                                        </DropdownItem>
+                                    )
+                                })}
+                            </DropdownMenu>
+                        </Dropdown> */}
+                    </HeaderRight>
+                </Show>
             </HeaderContent>
         </HeaderDiv>
     )
