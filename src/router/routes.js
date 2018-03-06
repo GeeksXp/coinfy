@@ -2,6 +2,9 @@ export default {
     home: () => `/`,
     settings: () => `/settings`,
 
+    // Sign in
+    signIn: () => `/signin`,
+
     // Add
     add: () => `/add`,
     create: ({ symbol }) => `/create/${symbol}`,
