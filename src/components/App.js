@@ -7,6 +7,10 @@ import Header from '/components/partials/Header'
 import SideMenu from '/components/partials/SideMenu'
 import Views from '/components/partials/Views'
 import Footer from '/components/partials/Footer'
+import SignIn from '/components/views/SignIn'
+import state from '../store/state'
+import { createObserver } from 'dop'
+import {isAuth} from '/utils/auth'
 
 function show() {
     let scanner = new Instascan.Scanner({
@@ -28,7 +32,16 @@ function show() {
         })
 }
 
-export default function App() {
+function signInView() {
+    return (
+        <Background>
+            <Header />
+            <SignIn />
+        </Background>
+    )
+}
+
+function mainView() {
     return (
         <Background>
             <Notifications />
@@ -39,6 +52,36 @@ export default function App() {
             <Popups />
         </Background>
     )
+}
+
+export default class App extends Component {
+    componentWillMount() {
+
+        this.observer = createObserver(mutations => {
+            this.forceUpdate()
+            //setHref(routes.home())
+        })
+        this.observer.observe(state, 'isLoggedIn')
+
+        isAuth()
+    }
+
+    componentWillUnmount() {
+        this.observer.destroy()
+    }
+
+    shouldComponentUpdate() {
+        return false
+    }
+
+    render() {
+        if(state.isLoggedIn) {
+            return mainView()
+        } else {
+            return signInView()
+        }
+        
+    }
 }
 
 const Background = styled.div`
