@@ -45,7 +45,9 @@ export default class SignIn extends Component {
 			})
 
 			if(result.length) {
-				signIn(JSON.stringify(result))
+				let dataProfile = Object.assign({}, result[0])
+				delete dataProfile.password
+				signIn(JSON.stringify(dataProfile))
 			} else {
 				this.setState({access_error: 'Invalid login or password. Please try again.'})
 			}
