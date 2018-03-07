@@ -2,7 +2,7 @@ import { computed, register, createObserver } from 'dop'
 import { create } from 'dop-router/location'
 import { Coins } from '/api/Coins'
 import { Fiats, USD } from '/api/Fiats'
-import { getTotalAssets, generateDefaultAsset } from '/store/getters'
+import { getTotalAssets, generateDefaultAsset, getAssetsFromStorage } from '/store/getters'
 import { localStorageGet } from '/api/browser'
 import { MAINNET, TESTNET } from '/const/'
 
@@ -41,8 +41,12 @@ const initialState = {
     },
 
     // authorization
-    isLoggedIn: false
+    isLoggedIn: false,
+
+    user: {}
 }
+
+initialState.user = JSON.parse(localStorageGet('profile', network))
 
 // restoring price from storage
 const assetsArray = Object.keys(Coins)
@@ -53,8 +57,8 @@ assetsArray.forEach(symbol => {
 
 // restoring assets from storage
 try {
-    let assets = localStorageGet('assets', network)
-    assets = JSON.parse(assets)
+    let assets = getAssetsFromStorage(network)
+    //assets = JSON.parse(assets)
     if (assets && typeof assets == 'object') {
         initialState.assets = assets
         for (let asset_id in assets)
@@ -71,6 +75,7 @@ const state = register(initialState)
 const updateTotalAssets = m =>
     (state.totalAssets = getTotalAssets(state.assets))
 updateTotalAssets()
+
 const observer = createObserver(updateTotalAssets)
 observer.observe(state, 'assets')
 observer.observe(state.assets)
