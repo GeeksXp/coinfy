@@ -1,6 +1,6 @@
-import {localStorageSet, localStorageGet, localStorageRemove} from '/api/browser'
+import { localStorageSet, localStorageGet, localStorageRemove } from '/api/browser'
 import state from '/store/state'
-import {setHref} from '/store/actions'
+import { setHref}  from '/store/actions'
 import routes from '/router/routes'
 
 const KEY = 'profile'

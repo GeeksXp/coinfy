@@ -10,7 +10,7 @@ import Footer from '/components/partials/Footer'
 import SignIn from '/components/views/SignIn'
 import state from '../store/state'
 import { createObserver } from 'dop'
-import {isAuth} from '/utils/auth'
+import { isAuth } from '/utils/auth'
 
 function show() {
     let scanner = new Instascan.Scanner({
