@@ -1,5 +1,5 @@
 import React from 'react'
-import { set, collect } from 'dop'
+import { set, collect, util } from 'dop'
 
 import {
     MAINNET,
@@ -98,7 +98,13 @@ export function deleteAsset(asset_id) {
 }
 
 export function saveAssetsLocalStorage() {
-    const assets = JSON.stringify(state.assets, (key, value) => {
+    let assetsData = state.assets;
+    if(localStorageGet('assets', state.network)) {
+        assetsData = JSON.parse(localStorageGet('assets', state.network))
+        assetsData = util.merge(state.assets, assetsData)
+    }
+
+    const assets = JSON.stringify(assetsData, (key, value) => {
         key = key.toLocaleLowerCase()
         return key === 'state' ? undefined : value
     })
