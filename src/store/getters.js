@@ -2,6 +2,28 @@ import { util } from 'dop'
 import state from '/store/state'
 import { Fiats } from '/api/Fiats'
 import { Coins } from '/api/Coins'
+import { localStorageGet } from '/api/browser'
+
+function getUserProfile() {
+    return JSON.parse(localStorageGet('profile'))
+}
+
+export function getAssetsFromStorage(network) {
+    const user = getUserProfile()
+    const assetsData = {}
+    let assets = localStorageGet('assets', network)
+    assets = JSON.parse(assets)
+    if(user && assets) {
+        Object.keys(assets).forEach(asset_id => {
+            if(assets[asset_id].user.id == user.id) {
+                assetsData[asset_id] = assets[asset_id]
+            }
+        })
+        return assetsData
+    } else {
+        return {}
+    }
+}
 
 export function getTotalAssets(assets) {
     return Object.keys(assets).length
@@ -60,7 +82,8 @@ export function generateDefaultAsset(object = {}) {
         },
         summary: {
             // summary data, must be removed when exporting
-        }
+        },
+        user: JSON.parse(localStorageGet('profile'))
     }
 
     return util.merge(asset, object)
