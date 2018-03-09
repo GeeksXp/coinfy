@@ -17,8 +17,7 @@ export default class SignIn extends Component {
     this.state = {
 			login: '',
 			password: '',
-			input_error: '',
-			access_error: '',
+			input_error: ''
 		}
 
 		this.handleChangeLogin = this.handleChangeLogin.bind(this)
@@ -71,7 +70,6 @@ export default class SignIn extends Component {
 			login: this.state.login,
 			password: this.state.password,
 			input_error: this.state.input_error,
-			access_error: this.state.access_error,
 			handleChangeLogin: this.handleChangeLogin,
 			handleChangePassword: this.handleChangePassword,
 			handleSubmit: this.handleSubmit
@@ -83,7 +81,6 @@ function SignInTemplate({
 	login,
 	password,
 	input_error,
-	access_error,
 	handleChangeLogin,
 	handleChangePassword,
 	handleSubmit
@@ -91,7 +88,6 @@ function SignInTemplate({
 	return (
 		<Container>
 			<FormField>
-				<Error>{access_error}</Error>
 				<Input
 					placeholder="Login"
 					value={login}
@@ -129,9 +125,4 @@ const Container = styled.div`
   max-width: 550px;
 	margin: 100px auto 0 auto;
 	padding-top: 20px;
-`
-const Error = styled.div `
-	color: ${styles.color.error};
-	font-size: 15px;
-	padding: 10px;
 `
