@@ -36,6 +36,7 @@ function show() {
 function signInView() {
     return (
         <Background>
+            <Notifications />
             <Header />
             <SignIn />
         </Background>
