@@ -57,13 +57,13 @@ assetsArray.forEach(symbol => {
 
 // restoring assets from storage
 try {
-    let assets = getAssetsFromStorage(network)
-    //assets = JSON.parse(assets)
-    if (assets && typeof assets == 'object') {
-        initialState.assets = assets
-        for (let asset_id in assets)
-            assets[asset_id] = generateDefaultAsset(assets[asset_id])
-    }
+    // let assets = getAssetsFromStorage(network)
+    // //assets = JSON.parse(assets)
+    // if (assets && typeof assets == 'object') {
+    //     initialState.assets = assets
+    //     for (let asset_id in assets)
+    //         assets[asset_id] = generateDefaultAsset(assets[asset_id])
+    //}
 } catch (e) {
     console.error('restoring assets from storage', e)
 }
