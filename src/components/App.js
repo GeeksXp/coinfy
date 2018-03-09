@@ -11,6 +11,7 @@ import SignIn from '/components/views/SignIn'
 import state from '../store/state'
 import { createObserver } from 'dop'
 import { isAuth } from '/utils/auth'
+import { getAssetsFromStorage } from '/store/getters'
 
 function show() {
     let scanner = new Instascan.Scanner({
@@ -58,8 +59,8 @@ export default class App extends Component {
     componentWillMount() {
 
         this.observer = createObserver(mutations => {
+            state.assets = getAssetsFromStorage()
             this.forceUpdate()
-            //setHref(routes.home())
         })
         this.observer.observe(state, 'isLoggedIn')
 
