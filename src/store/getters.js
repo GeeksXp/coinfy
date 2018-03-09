@@ -10,6 +10,7 @@ function getUserProfile() {
 
 export function getAssetsFromStorage(network) {
     const user = getUserProfile()
+
     const assetsData = {}
     let assets = localStorageGet('assets', network)
     assets = JSON.parse(assets)
@@ -19,6 +20,11 @@ export function getAssetsFromStorage(network) {
                 assetsData[asset_id] = assets[asset_id]
             }
         })
+        
+        for (let asset_id in assetsData) {
+            assetsData[asset_id] = generateDefaultAsset(assetsData[asset_id])
+        }
+  
         return assetsData
     } else {
         return {}
