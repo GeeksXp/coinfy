@@ -92,6 +92,9 @@ export function setPrivateKeyOrSeed(asset_id, key, password, is_seed) {
 export function deleteAsset(asset_id) {
     const collector = collect()
     delete state.assets[asset_id]
+    let assetsData = JSON.parse(localStorageGet('assets', state.network))
+    delete assetsData[asset_id]
+    localStorageSet('assets',  JSON.stringify(assetsData), state.network)
     saveAssetsLocalStorage()
     setAssetsExported(false)
     collector.emit()
@@ -101,7 +104,7 @@ export function saveAssetsLocalStorage() {
     let assetsData = state.assets;
     if(localStorageGet('assets', state.network)) {
         assetsData = JSON.parse(localStorageGet('assets', state.network))
-        assetsData = util.merge(state.assets, assetsData)
+        assetsData = util.merge(assetsData, state.assets)
     }
 
     const assets = JSON.stringify(assetsData, (key, value) => {
