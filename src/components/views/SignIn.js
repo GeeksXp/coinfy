@@ -50,6 +50,7 @@ export default class SignIn extends Component {
 				let dataProfile = Object.assign({}, result[0])
 				delete dataProfile.password
 				signIn(JSON.stringify(dataProfile))
+				addNotification(`Welcome ${dataProfile.login}`)
 			} else {
 				addNotification(`Invalid login or password. Please try again.`, ERROR)
 			}
