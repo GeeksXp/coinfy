@@ -7,6 +7,8 @@ import Input from '/components/styled/Input'
 import ButtonBig from '/components/styled/ButtonBig'
 import { signIn } from '/utils/auth'
 import state from '/store/state'
+import { addNotification } from '/store/actions'
+import { ERROR } from '/const/'
 
 export default class SignIn extends Component {
 	
@@ -49,7 +51,7 @@ export default class SignIn extends Component {
 				delete dataProfile.password
 				signIn(JSON.stringify(dataProfile))
 			} else {
-				this.setState({access_error: 'Invalid login or password. Please try again.'})
+				addNotification(`Invalid login or password. Please try again.`, ERROR)
 			}
 		} else {
 			this.setState({input_error: 'field is required'})
