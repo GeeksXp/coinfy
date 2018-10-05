@@ -26,3 +26,7 @@ export const TIMEOUT_BETWEEN_EACH_GETBALANCE = 5000 // 5 seconds
 // others
 export const minpassword = 8
 export const recovery_phrase_words = 12
+
+// API
+const API_VERSION = 1
+export const API_URL = `http://localhost:3000/api/v${API_VERSION}`

@@ -10,8 +10,10 @@ import Footer from '/components/partials/Footer'
 import SignIn from '/components/views/SignIn'
 import state from '../store/state'
 import { createObserver } from 'dop'
-import { isAuth } from '/utils/auth'
+import { isAuth } from '/helpers/auth'
 import { getAssetsFromStorage } from '/store/getters'
+import PreLoader from '/components/styled/PreLoader'
+import Div from '/components/styled/Div'
 
 function show() {
     let scanner = new Instascan.Scanner({
@@ -58,14 +60,13 @@ function mainView() {
 
 export default class App extends Component {
     componentWillMount() {
-
+        isAuth()
         this.observer = createObserver(mutations => {
             state.assets = getAssetsFromStorage()
             this.forceUpdate()
         })
         this.observer.observe(state, 'isLoggedIn')
-
-        isAuth()
+        this.observer.observe(state, 'loading')
     }
 
     componentWillUnmount() {
@@ -77,12 +78,12 @@ export default class App extends Component {
     }
 
     render() {
-        if(state.isLoggedIn) {
-            return mainView()
-        } else {
-            return signInView()
-        }
-        
+        const Layout = state.isLoggedIn ? mainView() : signInView()
+        return (
+            <Div height="100%">
+                { state.loading ? <PreLoader /> : Layout }
+            </Div>
+        )
     }
 }
 

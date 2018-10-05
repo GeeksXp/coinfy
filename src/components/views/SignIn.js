@@ -5,72 +5,57 @@ import dataUsers from '/const/users'
 import { FormField } from '/components/styled/Form'
 import Input from '/components/styled/Input'
 import ButtonBig from '/components/styled/ButtonBig'
-import { signIn } from '/utils/auth'
+import { signIn } from '/helpers/auth'
 import state from '/store/state'
 import { addNotification } from '/store/actions'
 import { ERROR } from '/const/'
+
 
 export default class SignIn extends Component {
 	
 	componentWillMount() {
 
     this.state = {
-			login: '',
-			password: '',
 			input_error: ''
 		}
 
-		this.handleChangeLogin = this.handleChangeLogin.bind(this)
+		this.handleChangeEmail = this.handleChangeEmail.bind(this)
 		this.handleChangePassword = this.handleChangePassword.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
 	}
-	
-	handleChangeLogin(event) {
+
+	handleChangeEmail(event) {
 		const value = event.target.value.trim()
-		this.setState({login: value})
+		state.user.email = value
 	}
 
 	handleChangePassword(event) {
 		const value = event.target.value.trim()
-		this.setState({password: value})
+		state.user.password = value
 	}
 	
 	handleSubmit(event) {
 		event.preventDefault()
-	
-		if(this.state.login.length > 0 && this.state.password.length > 0) {
-			
-			this.setState({input_error: ''})
-			let result = dataUsers.filter((data) => {
-				return this.validateAccess(data)
-			})
 
-			if(result.length) {
-				let dataProfile = Object.assign({}, result[0])
-				delete dataProfile.password
-				signIn(JSON.stringify(dataProfile))
-				addNotification(`Welcome ${dataProfile.name}`)
-			} else {
-				addNotification(`Invalid login or password. Please try again.`, ERROR)
-			}
+		if(state.user.email && state.user.password) {
+			this.setState({input_error: ''})
+
+			signIn(state.user.email, state.user.password).then(username => {
+				addNotification(`Welcome ${username}`)
+			}).catch(error => {
+				addNotification(error, ERROR)
+			});
 		} else {
 			this.setState({input_error: 'field is required'})
 		}
 	}
 
-	validateAccess(data) {
-		if(data.login == this.state.login && data.password == btoa(this.state.password)) {
-			return true
-		}
-		return false
-	}
-	
 	render() {
 		return React.createElement(SignInTemplate, {
-			login: this.state.login,
-			password: this.state.password,
+			email: state.user.email,
+			password: state.user.password,
 			input_error: this.state.input_error,
-			handleChangeLogin: this.handleChangeLogin,
+			handleChangeEmail: this.handleChangeEmail,
 			handleChangePassword: this.handleChangePassword,
 			handleSubmit: this.handleSubmit
 		})
@@ -78,10 +63,10 @@ export default class SignIn extends Component {
 }
 
 function SignInTemplate({
-	login,
+	email,
 	password,
 	input_error,
-	handleChangeLogin,
+	handleChangeEmail,
 	handleChangePassword,
 	handleSubmit
 }) {
@@ -89,11 +74,11 @@ function SignInTemplate({
 		<Container>
 			<FormField>
 				<Input
-					placeholder="Login"
-					value={login}
-					onChange={handleChangeLogin} 
+					placeholder="Email"
+					value={email}
+					onChange={handleChangeEmail} 
 					error={input_error}
-					invalid={input_error && login.length == 0}
+					invalid={input_error && email.length === 0}
 					width="100%"
 					type="text"
 				/>
@@ -106,7 +91,7 @@ function SignInTemplate({
 					value={password}
 					onChange={handleChangePassword} 
 					error={input_error}
-					invalid={input_error && password.length == 0}
+					invalid={input_error && password.length === 0}
 				/>
 			</FormField>
 			<FormField>
