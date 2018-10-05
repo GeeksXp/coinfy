@@ -39,14 +39,17 @@ const initialState = {
             open: false
         }
     },
+    user: {
+        email: '',
+        password: ''
+    },
+    loading: false,
 
     // authorization
     isLoggedIn: false,
-
-    user: {}
 }
 
-initialState.user = JSON.parse(localStorageGet('profile', network))
+//initialState.user = JSON.parse(localStorageGet('profile', network))
 
 // restoring price from storage
 const assetsArray = Object.keys(Coins)
