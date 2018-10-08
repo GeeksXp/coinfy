@@ -1,30 +1,40 @@
 import { localStorageSet, localStorageGet, localStorageRemove } from '/api/browser'
 import { collect } from 'dop'
 import { login, logout, validateToken } from '/api/server'
+import { auth } from '/api/firebase'
 import state from '/store/state'
 import { setHref}  from '/store/actions'
 import routes from '/router/routes'
-import { error } from 'util';
+import { error } from 'util'
 
 const KEY = 'profile'
 
 export const signIn = (email, password) => {
   state.loading = true
   return new Promise((resolve, reject) => {
-    login({ email, password}).then(data => {
-      setUser(data)
-      setHref(routes.home())
-      resolve(data.username)
+    auth.signInWithEmailAndPassword(email, password).then(data => {
+      const { user: { uid: id, stsTokenManager: {accessToken: token } } } = JSON.parse(JSON.stringify(data));
+      login({ id, token}).then(data => {
+        setUser(data)
+        setHref(routes.home())
+        resolve(data.username)
+      }).catch(error => {
+        state.loading = false
+        reject(error)
+      })
     }).catch(error => {
       state.loading = false
       reject(error)
-    })
+    });
   })
 }
 
 export const signOut = () => {
-  clean()
-  logout();
+  auth.signOut().then(function() {
+    clean()
+  }).catch(function(error) {
+    console.log(error)
+  });
 }
 
 export const isAuth = () => {

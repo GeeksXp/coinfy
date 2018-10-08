@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_URL } from '/const';
+import axios from 'axios'
+import { API_URL } from '/const'
 
 
 export const login = data => {

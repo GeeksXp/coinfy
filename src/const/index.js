@@ -34,3 +34,11 @@ export const API_URL = `http://localhost:3000/api/v${API_VERSION}`
 // roles
 export const ADMIN_ROLE = 'admin'
 export const USER_ROLE = 'user'
+
+// firebase
+export const FIREBASE = {
+  apiKey: 'AIzaSyCsV7sZ4BWj140Q4ImPlO_FK4HXq0a4wJY',
+  authDomain: 'coinfy-521e2.firebaseapp.com',
+  databaseURL: 'https://coinfy-521e2.firebaseio.com',
+  storageBucket: 'coinfy-521e2.appspot.com',
+}
