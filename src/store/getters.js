@@ -3,6 +3,7 @@ import state from '/store/state'
 import { Fiats } from '/api/Fiats'
 import { Coins } from '/api/Coins'
 import { localStorageGet } from '/api/browser'
+import { ADMIN_ROLE } from '/const/'
 
 function getUserProfile() {
     return JSON.parse(localStorageGet('profile'))
@@ -176,4 +177,8 @@ export function getReusableSeeds(symbol) {
     }
 
     return reusables
+}
+
+export function isAdmin() {
+    return state.user.role === ADMIN_ROLE || false;
 }

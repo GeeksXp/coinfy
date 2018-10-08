@@ -23,9 +23,8 @@ export const signIn = (email, password) => {
 }
 
 export const signOut = () => {
-  logout().then((data) => {
-    clean()
-  })
+  clean()
+  logout();
 }
 
 export const isAuth = () => {

@@ -14,8 +14,8 @@ import { ERROR } from '/const/'
 export default class SignIn extends Component {
 	
 	componentWillMount() {
-
-    this.state = {
+		
+			this.state = {
 			input_error: ''
 		}
 
@@ -78,7 +78,7 @@ function SignInTemplate({
 					value={email}
 					onChange={handleChangeEmail} 
 					error={input_error}
-					invalid={input_error && email.length === 0}
+					invalid={input_error && (typeof email === 'undefined' || email.length === 0)}
 					width="100%"
 					type="text"
 				/>
@@ -91,7 +91,7 @@ function SignInTemplate({
 					value={password}
 					onChange={handleChangePassword} 
 					error={input_error}
-					invalid={input_error && password.length === 0}
+					invalid={input_error && (typeof password === 'undefined' || password.length === 0)}
 				/>
 			</FormField>
 			<FormField>

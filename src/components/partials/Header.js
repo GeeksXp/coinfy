@@ -27,7 +27,8 @@ import {
     DropdownItem,
     DropdownMenu
 } from '/components/styled/Dropdown'
-import {signOut} from '../../helpers/auth'
+import { signOut } from '/helpers/auth'
+import { isAdmin } from '/store/getters'
 
 export default class Header extends Component {
     componentWillMount() {
@@ -238,7 +239,7 @@ function HeaderTemplate({
                                     <DropdownItem onClick={onSettings}>
                                         Settings
                                     </DropdownItem>
-                                    {state.user.role === 'admin' && <DropdownItem>Users</DropdownItem>}
+                                    { isAdmin() && <DropdownItem>Users</DropdownItem> }
                                     <DropdownItem onClick={onSignOut}>
                                         Sign out
                                     </DropdownItem>

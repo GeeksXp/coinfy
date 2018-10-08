@@ -30,3 +30,7 @@ export const recovery_phrase_words = 12
 // API
 const API_VERSION = 1
 export const API_URL = `http://localhost:3000/api/v${API_VERSION}`
+
+// roles
+export const ADMIN_ROLE = 'admin'
+export const USER_ROLE = 'user'
