@@ -115,6 +115,10 @@ export default class Header extends Component {
         setHref(routes.settings())
     }
 
+    onUsers() {
+        setHref(routes.users())
+    }
+
     onSignOut() {
         signOut()
         state.menuOpen = false
@@ -154,6 +158,7 @@ export default class Header extends Component {
             // onClose: this.onClose,
             onHome: this.onHome,
             onSettings: this.onSettings,
+            onUsers: this.onUsers,
             totalAssets: state.totalAssets,
             onSignOut: this.onSignOut
         })
@@ -174,6 +179,7 @@ function HeaderTemplate({
     // onClose,
     onHome,
     onSettings,
+    onUsers,
     totalAssets,
     onSignOut
 }) {
@@ -239,7 +245,7 @@ function HeaderTemplate({
                                     <DropdownItem onClick={onSettings}>
                                         Settings
                                     </DropdownItem>
-                                    { isAdmin() && <DropdownItem>Users</DropdownItem> }
+                                    { isAdmin() && <DropdownItem onClick={onUsers}>Users</DropdownItem> }
                                     <DropdownItem onClick={onSignOut}>
                                         Sign out
                                     </DropdownItem>

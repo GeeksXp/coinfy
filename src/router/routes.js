@@ -5,6 +5,9 @@ export default {
     // Sign in
     signIn: () => `/signin`,
 
+    // Users
+    users: () => `/users`,
+
     // Add
     add: () => `/add`,
     create: ({ symbol }) => `/create/${symbol}`,

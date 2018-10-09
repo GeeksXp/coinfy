@@ -19,6 +19,7 @@ import Message from '/components/styled/Message'
 // Views
 import Dashboard from '/components/views/Dashboard'
 import Settings from '/components/views/Settings'
+import Users from '/components/views/Users'
 import Add from '/components/views/Add'
 import Create from '/components/views/Create'
 import ImportBTC from '/components/views/ImportBTC'
@@ -78,6 +79,9 @@ function ContentTemplate({
                     </Route>
                     <Route pathname={routes.settings()}>
                         <Settings />
+                    </Route>
+                    <Route pathname={routes.users()}>
+                        <Users />
                     </Route>
                     <Route pathname={routes.add()}>
                         <Add />
