@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import styles from '/const/styles'
-import dataUsers from '/const/users'
 import { FormField } from '/components/styled/Form'
 import Input from '/components/styled/Input'
 import ButtonBig from '/components/styled/ButtonBig'

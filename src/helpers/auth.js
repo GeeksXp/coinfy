@@ -12,9 +12,11 @@ const KEY = 'profile'
 export const signIn = (email, password) => {
   state.loading = true
   return new Promise((resolve, reject) => {
-    auth.signInWithEmailAndPassword(email, password).then(data => {
-      const { user: { uid: id, stsTokenManager: {accessToken: token } } } = JSON.parse(JSON.stringify(data));
-      login({ id, token}).then(data => {
+    auth.signInWithEmailAndPassword(email, password).then(result => {
+    
+      const { user: { uid: id, stsTokenManager: {accessToken: token} } } = JSON.parse(JSON.stringify(result));
+      console.log(token)
+      login({ id }, token).then(data => {
         setUser(data)
         setHref(routes.home())
         resolve(data.username)
@@ -38,18 +40,26 @@ export const signOut = () => {
 }
 
 export const isAuth = () => {
-  const data = JSON.parse(localStorageGet(KEY));
   state.loading = true
-  if(data) {
-    return validateToken(data.token).then(data => {
-      setUser(data)
-    }).catch(error => {
-      state.loading = false
-      console.log('ERROR', error)
-      // clean()
-    })
-  }
-  clean()
+  auth.onAuthStateChanged(function(user) {
+    if (user) {
+      auth.currentUser.getIdToken(true).then(idToken => {
+        return validateToken(idToken).then(data => {
+          setUser(data)
+        }).catch(error => {
+          state.loading = false
+          console.log('ERROR', error)
+          // clean()
+        })
+      }).catch(error => {
+        state.loading = false
+        console.log('ERROR', error)
+        // clean()
+      });
+    } else {
+      clean()
+    }
+  })
 }
 
 const clean = () => {

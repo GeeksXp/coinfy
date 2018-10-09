@@ -2,9 +2,9 @@ import axios from 'axios'
 import { API_URL } from '/const'
 
 
-export const login = data => {
+export const login = (data, token) => {
   return new Promise((resolve, reject) => {
-    axios.post(`${API_URL}/login`, data)
+    axios.post(`${API_URL}/login`, data, { headers: {"Authorization" : token }})
     .then(response => {
       const {data: {status, response : responseData }} = response;
       if(!status) {
