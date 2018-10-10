@@ -1,6 +1,6 @@
-import { localStorageSet, localStorageGet, localStorageRemove } from '/api/browser'
+import { localStorageSet, localStorageRemove } from '/api/browser'
 import { collect } from 'dop'
-import { login, logout, validateToken } from '/api/server'
+import { auth as serverAuth} from '/api/server'
 import { auth } from '/api/firebase'
 import state from '/store/state'
 import { setHref}  from '/store/actions'
@@ -13,17 +13,9 @@ export const signIn = (email, password) => {
   state.loading = true
   return new Promise((resolve, reject) => {
     auth.signInWithEmailAndPassword(email, password).then(result => {
-    
-      const { user: { uid: id, stsTokenManager: {accessToken: token} } } = JSON.parse(JSON.stringify(result));
-      console.log(token)
-      login({ id }, token).then(data => {
-        setUser(data)
-        setHref(routes.home())
-        resolve(data.username)
-      }).catch(error => {
-        state.loading = false
-        reject(error)
-      })
+      const { user: { displayName } } = JSON.parse(JSON.stringify(result));
+      setHref(routes.home())
+      resolve(displayName)
     }).catch(error => {
       state.loading = false
       reject(error)
@@ -44,7 +36,8 @@ export const isAuth = () => {
   auth.onAuthStateChanged(function(user) {
     if (user) {
       auth.currentUser.getIdToken(true).then(idToken => {
-        return validateToken(idToken).then(data => {
+        localStorageSet('token', idToken)
+        return serverAuth.validateToken(idToken).then(data => {
           setUser(data)
         }).catch(error => {
           state.loading = false
@@ -65,6 +58,7 @@ export const isAuth = () => {
 const clean = () => {
   const collector = collect()
   localStorageRemove(KEY)
+  localStorageRemove('token')
   state.isLoggedIn = false
   state.loading = false
   state.user = {}
