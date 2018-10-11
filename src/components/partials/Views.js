@@ -19,7 +19,12 @@ import Message from '/components/styled/Message'
 // Views
 import Dashboard from '/components/views/Dashboard'
 import Settings from '/components/views/Settings'
-import Users from '/components/views/Users'
+
+// users
+import Users from '/components/views/Users/index'
+import CreateUser from '/components/views/Users/create'
+import EditUser from '/components/views/Users/edit'
+
 import Add from '/components/views/Add'
 import Create from '/components/views/Create'
 import ImportBTC from '/components/views/ImportBTC'
@@ -28,6 +33,7 @@ import ImportERC20 from '/components/views/ImportERC20'
 import ViewBTC from '/components/views/BTC/'
 import ViewETH from '/components/views/ETH/'
 import ViewERC20 from '/components/views/ERC20/'
+import { isAdmin } from '/store/getters'
 
 export default class Content extends Component {
     componentWillMount() {
@@ -80,9 +86,15 @@ function ContentTemplate({
                     <Route pathname={routes.settings()}>
                         <Settings />
                     </Route>
-                    <Route pathname={routes.users()}>
+                    { isAdmin() && <Route pathname={routes.users()}>
                         <Users />
-                    </Route>
+                    </Route>}
+                    { isAdmin() && <Route pathname={routes.createUser()}>
+                        <CreateUser />
+                    </Route>}
+                    { isAdmin() && <Route pathname={new RegExp(routes.editUser({ id: symbol_add }))}>
+                        <EditUser />
+                    </Route>}
                     <Route pathname={routes.add()}>
                         <Add />
                     </Route>

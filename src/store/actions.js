@@ -208,7 +208,7 @@ export function forceLoseSession() {
 }
 
 let idNotification = 0
-export function addNotification(text, color = OK, timeout = 6000) {
+export function addNotification(text, color = OK, timeout = 2000) {
     state.notifications[idNotification] = {
         id: idNotification,
         text: text,

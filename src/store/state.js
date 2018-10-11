@@ -39,10 +39,7 @@ const initialState = {
             open: false
         }
     },
-    user: {
-        email: '',
-        password: ''
-    },
+    user: {},
     loading: false,
 
     // authorization

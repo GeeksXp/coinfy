@@ -27,7 +27,7 @@ import {
     DropdownItem,
     DropdownMenu
 } from '/components/styled/Dropdown'
-import { signOut } from '/helpers/auth'
+import { auth } from '/api/server'
 import { isAdmin } from '/store/getters'
 
 export default class Header extends Component {
@@ -120,8 +120,7 @@ export default class Header extends Component {
     }
 
     onSignOut() {
-        signOut()
-        state.menuOpen = false
+        auth.signOut()
     }
 
     // onAddAsset() {
@@ -203,13 +202,12 @@ function HeaderTemplate({
                 </Show>
                 <HeaderCenter>
                     <HeaderLogo
-                        isHome={state.location.pathname === routes.home()}
+                        isSignin={state.location.pathname === routes.signIn()}
                         onClick={onHome}
                     >
                         <div>
                             <IconHome size={15} color="white" />
                         </div>
-                        <img src="/static/image/logo.svg" width="80" />
                     </HeaderLogo>
 
                     {/* {Object.keys(cryptoPrices).map(symbol => {
@@ -353,7 +351,7 @@ const HeaderLogo = styled.div`
     width: 100px;
     margin: 0 auto;
     & div {
-        opacity: ${props => (props.isHome ? 1 : 0)}};
+        opacity: ${props => (props.isSignin ? 0 : 1)}};
     }
     &:hover div {
         opacity: 1;

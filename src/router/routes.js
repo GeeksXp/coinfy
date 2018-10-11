@@ -7,6 +7,8 @@ export default {
 
     // Users
     users: () => `/users`,
+    createUser: () => `/user/create`,
+    editUser: ({ id }) => `/user/edit/${id}`,
 
     // Add
     add: () => `/add`,
