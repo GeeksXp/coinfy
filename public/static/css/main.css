@@ -88,7 +88,6 @@ iframe {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 33px 30px;
 }
 
 .wrap-table100 {
@@ -173,7 +172,7 @@ tbody tr:hover {
 }
 
 .column4 {
-  width: 30px;
+  width: 100px;
 }
 
 .column5 {
@@ -181,11 +180,8 @@ tbody tr:hover {
 }
 
 .column6 {
-  width: 222px;
-  text-align: right;
-  padding-right: 62px;
+  width: 30px;
 }
-
 
 @media screen and (max-width: 992px) {
   table {
@@ -228,10 +224,13 @@ tbody tr:hover {
     content: "Email";
   }
   table tbody tr td:nth-child(4):before {
+    content: "Role";
+  }
+  table tbody tr td:nth-child(5):before {
     content: "Edit";
     padding-top: 10px;
   }
-  table tbody tr td:nth-child(5):before {
+  table tbody tr td:nth-child(6):before {
     content: "Delete";
     padding-top: 10px;
   }

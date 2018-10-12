@@ -76,7 +76,9 @@ export default class EditUser extends Component {
 			displayName: this.state.displayName,
 			email: this.state.email,
 			role: this.state.role,
-			loading: this.state.loading,
+      loading: this.state.loading,
+      id: this.state.id,
+      userId: state.user.id,
 			input_error: this.state.input_error,
 			handleChange: this.handleChange,
       handleSubmit: this.handleSubmit,
@@ -91,7 +93,9 @@ function EditUserTemplate({
   input_error,
   handleChange,
   handleSubmit,
-  loading
+  loading,
+  id,
+  userId
 }) {
 	return (
 		<RightContainerPadding>
@@ -132,6 +136,7 @@ function EditUserTemplate({
                 onChange={(e) => handleChange(e, 'role')}
                 invalid={input_error && role.length === 0}
                 value={role}
+                disabled={id === userId}
               >
                 <option value="">Select role</option>
                 <option value="admin">Admin</option>

@@ -11,14 +11,11 @@ export default ({method = 'get', data, path, headers }) => {
           return reject(responseData)
         }
         resolve(responseData)
+      }).catch(e => {
+        reject(e)
       })
     })
   } catch(e) {
-    return e;
+    return e
   }
 }
-
-const cleanObject = obj => {
-  obj && Object.keys(obj).forEach(key => obj[key] == null && delete obj[key]);
-  return obj;
-};

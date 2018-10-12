@@ -14,6 +14,7 @@ import Div from '/components/styled/Div'
 import H1 from '/components/styled/H1'
 import ButtonBig from '/components/styled/ButtonBig'
 import { addNotification } from '/store/actions'
+import state from '/store/state'
 
 export default class Users extends Component {
 
@@ -37,16 +38,20 @@ export default class Users extends Component {
 		const res = confirm('Are you sure?')
 		if(res) {
 			this.setState({loading: true});
-			users.deleteUser(id).then(data => {
-				addNotification(data)
-				const dataUsers = this.state.users.filter(item => {
-					return item.id !== id
+			if(state.user.id !== id) {
+				users.deleteUser(id).then(data => {
+					addNotification(data)
+					const dataUsers = this.state.users.filter(item => {
+						return item.id !== id
+					})
+					this.setState({
+						users: dataUsers,
+						loading: false
+					});
 				})
-				this.setState({ 
-					users: dataUsers,
-					loading: false
-				});
-			})
+			}
+			addNotification("You can\'t delete this user", ERROR)
+			this.setState({loading: false});
 		}
 	}
 
@@ -87,7 +92,8 @@ function UsersTemplate({ users, loading, deleteUser }) {
 												<tr class="table100-head">
 													<th class="column1">№</th>
 													<th class="column2">Name</th>
-													<th class="column3" colspan="3">Email</th>
+													<th class="column3">Email</th>
+													<th class="column4" colspan="3">Role</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -96,8 +102,9 @@ function UsersTemplate({ users, loading, deleteUser }) {
 														<td class="column1">{index+1}</td>
 														<td class="column2">{item.displayName}</td>
 														<td class="column3">{item.email}</td>
-														<td class="column4"><IconEdit onClick={() => setHref(routes.editUser({id: item.id}))} size={25} color="green" /></td>
-														<td class="column5"><IconTrash onClick={() => deleteUser(item.id)} size={25} color="red" /></td>
+														<td class="column4">{item.role}</td>
+														<td class="column5"><IconEdit onClick={() => setHref(routes.editUser({id: item.id}))} size={25} color="green" /></td>
+														<td class="column6">{state.user.id !== item.id && <IconTrash onClick={() => deleteUser(item.id)} size={25} color="red" />}</td>
 													</tr>
 												))}
 											</tbody>
